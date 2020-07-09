@@ -122,6 +122,42 @@ deployment.extensions/olm-operator scaled
 
 ```oc create -f  clusterlogginginstanceIBM.yaml ```
 
+check pods using command 
+``` oc get pods```
+
+### add new volume and volume mount
+Update the default value of the container logs in the Fluentd daemon set.
+Change your cluster logging instance management state to unmanaged by following  By making the cluster logging instance unmanaged, you are able to update component configurations so that they are not overwritten. Do not change the Elasticsearch management state.
+```oc edit ClusterLogging instance```
+```oc edit ClusterLogging instance
+
+apiVersion: "logging.openshift.io/v1"
+kind: "ClusterLogging"
+metadata:
+  name: "instance"
+
+....
+
+spec:
+  managementState: "Managed" 
+```
+#### change Managed to Unmanaged
+
+From the OpenShift console openshift-logging project, click Workloads > Daemon Sets, and click the Fluentd daemon set.
+go to yaml tab and in the volumeMounts section, add the /var/data container log path to the mount path.
+- mountPath: /var/data
+  name: vardata
+  
+In the volumes section, add the /var/data container log path to the host path.
+- hostPath:
+    path: /var/data/
+    type: ""
+  name: vardata
+  
+### Verify that container logs are sent to Elasticsearch by checking the Kibana console.
+In openshift webconsole , under monitoring drop down , click on loging . This will redirect you to kibana dashboard
+
+<img src="./img/kibana.png">
 
 
 
