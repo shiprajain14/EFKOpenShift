@@ -109,18 +109,17 @@ deployment.extensions/olm-operator scaled
 
 ```
 
-## 
 
-``` oc project openshift-logging 
-```
-``` oc delete deployment cluster-logging-operator
-```
-```oc delete deployment cluster-logging-operator
-```
-```oc create clusterloggingOperator_4.3.yaml
-```
-```oc create -f  clusterlogginginstanceIBM.yaml 
-```
+``` oc project openshift-logging ```
+
+``` oc delete deployment cluster-logging-operator```
+
+```oc delete deployment cluster-logging-operator```
+
+```oc create clusterloggingOperator_4.3.yaml```
+
+```oc create -f  clusterlogginginstanceIBM.yaml ```
+
 
 
 
