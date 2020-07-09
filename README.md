@@ -56,7 +56,12 @@ subscription.operators.coreos.com/elasticsearch-operator configured
 ```
 ### check if elastic operator is installed 
 In openshift webconsole got to operators->installaed operators. Slect all projects from the drop down . You should see eastic operator is installed in all the namespaces
-![alt text](https://github.com/shiprajain14/EFKOpenShift/blob/master/img/elasticsearchop.png)
+<img src="https://github.com/shiprajain14/EFKOpenShift/img/elasticsearchops">
+<p align="center">
+  <img src="../img/elasticsearchops">
+  
+</p>
+
 
 ## Create role name prometheus-k8s to access openshift-operators-redhat namespace
 ```$ oc create -f 4_elastic-search-rbac.yaml```
