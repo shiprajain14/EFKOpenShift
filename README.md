@@ -149,11 +149,11 @@ spec:
 
 From the OpenShift console openshift-logging project, click Workloads > Daemon Sets, and click the Fluentd daemon set.
 go to yaml tab and in the volumeMounts section, add the /var/data container log path to the mount path.
-```- mountPath: /var/data
-  name: vardata
+``` - mountPath: /var/data
+   name: vardata
 ```  
 In the volumes section, add the /var/data container log path to the host path.
-```- hostPath:
+``` - hostPath:
     path: /var/data/
     type: ""
   name: vardata
