@@ -104,22 +104,26 @@ follow this step 4 for all inspct node
 ### Create Cluster logging operator 
 Before creating cluster logging operator we need to do certian pre-requisites 
 
+``` oc project openshift-logging ```
+
 ```$watch -n 5 kubectl -n openshift-operator-lifecycle-manager scale --replicas 0 deploy olm-operator
 Every 5.0s: kubectl -n openshift-operator-lifecycle-manager scale --replicas 0 deploy olm-operator                                        Thu Jul  9 08:52:41 2020
 
 deployment.extensions/olm-operator scaled
 
 ```
-
-
-``` oc project openshift-logging ```
+do a ctrl c to come out 
+delete any existing cluster logging instance 
 
 ``` oc delete deployment cluster-logging-operator```
 
+Delete any cluster logging operator
 ```oc delete deployment cluster-logging-operator```
 
-```oc create clusterloggingOperator_4.3.yaml```
+Create cluster logging operator
 
+```oc create clusterloggingOperator_4.3.yaml```
+Create cluster logging Instance
 ```oc create -f  clusterlogginginstanceIBM.yaml ```
 
 check pods using command 
@@ -145,14 +149,15 @@ spec:
 
 From the OpenShift console openshift-logging project, click Workloads > Daemon Sets, and click the Fluentd daemon set.
 go to yaml tab and in the volumeMounts section, add the /var/data container log path to the mount path.
-- mountPath: /var/data
+```- mountPath: /var/data
   name: vardata
-  
+```  
 In the volumes section, add the /var/data container log path to the host path.
-- hostPath:
+```- hostPath:
     path: /var/data/
     type: ""
   name: vardata
+```  
   
 ### Verify that container logs are sent to Elasticsearch by checking the Kibana console.
 In openshift webconsole , under monitoring drop down , click on loging . This will redirect you to kibana dashboard
