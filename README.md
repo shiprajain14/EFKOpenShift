@@ -42,25 +42,87 @@ Welcome! See 'oc help' to get started
 ```
 
 ### Create openshift-operators-redhat namespace using below command
-``` $  oc create -f 1_elastic-search-operator-namespace.yaml 
+``$oc create -f 1_elastic-search-operator-namespace.yaml 
        namespace/openshift-operators-redhat configured
-```
+``
 
 ### Create openshift-operators-redhat OperatorGroup
-``` $ oc create -f 2_elastic-search-operator-group.yaml 
+``$ oc create -f 2_elastic-search-operator-group.yaml 
     operatorgroup.operators.coreos.com/openshift-operators-redhat configured 
-```
-### 3. Create Elastic Search Operator
+``
+###  Create Elastic Search Operator
 ```$ oc create -f 3_elastic-search-subscription-operator.yaml 
-ubscription.operators.coreos.com/elasticsearch-operator configured ```
+subscription.operators.coreos.com/elasticsearch-operator configured
+```
+### check if elastic operator is installed 
+In openshift webconsole got to operators->installaed operators. Slect all projects from the drop down . You should see eastic operator is installed in all the namespaces
+![alt text](https://github.com/shiprajain14/EFKOpenShift/blob/master/img/elasticsearchop.png)
 
-4. Create role name prometheus-k8s to access openshift-operators-redhat namespace
-5. Create openshift-logging namesapce
-6. Create openshift-logging operatorGroup
-7. Change the virtual memory in all worker nodes(Fot elastic search , virtual memory required is 263754 wheras free cluster provisioned have virtual memory set to 253754. So we will change all worker nodes to update memory
-8. Create Cluster logging operator
-9. Create cluster logging Instance (This instance will create our reuired pods in openshift-logging namespace)
-### 
+## Create role name prometheus-k8s to access openshift-operators-redhat namespace
+```$ oc create -f 4_elastic-search-rbac.yaml```
+
+### Create openshift-logging namesapce
+```$ oc create -f -f 5_cluster-logging-namespace.yaml ```
+
+### Create openshift-logging operatorGroup
+
+```$ oc create -f 6_cluster-logging-operator-group.yaml```
+
+### change the VM of worker node 
+
+1. check the name of your cluter using command 
+``` oc get node```
+``` vi worker1.yaml```
+change the value at last line for key kubernetes.io/hostname: to first worker node name 
+Similarly change worker2.yaml file and worker 3.yaml file with wour worker node name 
+
+2. use belopw command 
+``` oc create -f worker1.yaml```
+``` oc create -f worker2.yaml```
+``` oc create -f worker3.yaml```
+
+3. Go to openshift webconsole->workloads->pods
+select kube-system as project , you should see three pods created 
+![alt text](https://github.com/shiprajain14/EFKOpenShift/blob/master/img/workernode.png)
+
+4 click on inspectnode164121 and go to Terminal. type below mentioned commands
+```sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /host/etc/ssh/sshd_config```
+
+```./systemutil  -service sshd.service```
+
+```ssh root@localhost```
+
+```vi /etc/sysctl.conf```
+
+change the value of vm.max_map_count to 263754
+
+follow this step 4 for all inspct node
+
+
+### Create Cluster logging operator 
+Before creating cluster logging operator we need to do certian pre-requisites 
+
+```$watch -n 5 kubectl -n openshift-operator-lifecycle-manager scale --replicas 0 deploy olm-operator
+Every 5.0s: kubectl -n openshift-operator-lifecycle-manager scale --replicas 0 deploy olm-operator                                        Thu Jul  9 08:52:41 2020
+
+deployment.extensions/olm-operator scaled
+
+```
+
+## 
+
+``` oc project openshift-logging 
+```
+``` oc delete deployment cluster-logging-operator
+```
+```oc delete deployment cluster-logging-operator
+```
+```oc create clusterloggingOperator_4.3.yaml
+```
+```oc create -f  clusterlogginginstanceIBM.yaml 
+```
+
+
 
 
 
