@@ -56,11 +56,8 @@ subscription.operators.coreos.com/elasticsearch-operator configured
 ```
 ### check if elastic operator is installed 
 In openshift webconsole got to operators->installaed operators. Slect all projects from the drop down . You should see eastic operator is installed in all the namespaces
-<img src="https://github.com/shiprajain14/EFKOpenShift/img/elasticsearchops">
-<p align="center">
-  <img src="../img/elasticsearchops">
-  
-</p>
+<img src="./img/elasticsearchops.png">
+
 
 
 ## Create role name prometheus-k8s to access openshift-operators-redhat namespace
@@ -88,7 +85,7 @@ Similarly change worker2.yaml file and worker 3.yaml file with wour worker node 
 
 3. Go to openshift webconsole->workloads->pods
 select kube-system as project , you should see three pods created 
-![alt text](https://github.com/shiprajain14/EFKOpenShift/blob/master/img/workernode.png)
+<img src="./img/workernode.png)
 
 4 click on inspectnode164121 and go to Terminal. type below mentioned commands
 ```sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /host/etc/ssh/sshd_config```
